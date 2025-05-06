@@ -1,44 +1,59 @@
-# digital-twin-parking
-Great! Here's a **professional README.md** tailored for your **Parking Digital Twin** project, covering architecture, setup, usage, and screenshots.
 
 ---
 
-````markdown
-# 🅿️ Parking Digital Twin with FIWARE
+# 🚗 Smart Parking Digital Twin
 
-This project implements a complete **Digital Twin** for monitoring parking spots using the FIWARE ecosystem. It includes real-time data ingestion, context management, and dashboard visualization.
+This project implements a **Digital Twin** of a smart parking system using [FIWARE](https://www.fiware.org/), providing real-time simulation, data monitoring, and visualization capabilities.
 
-## 🧠 Context
+---
 
-Urban environments require efficient parking management. This Digital Twin replicates a real-world parking spot virtually, updating its status in real-time and visualizing it through an interactive dashboard.
+## 📌 Table of Contents
+
+* [Project Overview](#project-overview)
+* [Architecture](#architecture)
+* [Technologies Used](#technologies-used)
+* [Data Model](#data-model)
+* [Setup Instructions](#setup-instructions)
+* [Running the Application](#running-the-application)
+* [Visualizations](#visualizations)
+* [Screenshots](#screenshots)
+
+---
+
+## 📖 Project Overview
+
+This Digital Twin simulates and monitors a smart parking spot, allowing real-time status updates and integrating with context-aware platforms. It demonstrates how virtual representations of physical systems can be managed, tracked, and visualized.
 
 ---
 
 ## 🏗️ Architecture
 
-- **Sensor/Simulator**: Sends `status` updates (`occupied` / `free`) to Orion.
-- **FIWARE Orion**: Central context broker managing the digital twin state.
-- **Draco**: Connects Orion to databases (e.g. MySQL) for historical persistence.
-- **MongoDB**: Backing database for Orion.
-- **BOLT**: Visualization dashboard for real-time entity monitoring.
-- **Flask App**: Receives notifications (via subscription) from Orion.
+The solution consists of the following main components:
 
-```mermaid
-graph TD;
-  Sensor --> Orion;
-  Orion --> Flask;
-  Orion --> Draco;
-  Draco --> MySQL;
-  Orion --> BOLT;
-````
+* **Orion Context Broker** – Manages context information (parking spot status).
+* **Draco (Cygnus)** – Persists context changes into a database (e.g., MySQL).
+* **Flask Listener** – Handles notifications via a REST API.
+* **MongoDB / MySQL** – Backend storage.
+* **Visualization Layer (Planned)** – Web interface or dashboard to visualize parking data.
+
+**Communication is handled using HTTP and NGSI v2 protocol.**
+
+---
+
+## 💡 Technologies Used
+
+* **FIWARE Orion Context Broker**
+* **Draco / Cygnus for data persistence**
+* **MongoDB / MySQL**
+* **Python + Flask (Listener)**
+* **Docker / Docker Compose**
+* *(Planned)* Visualization with BOLT.New or Grafana
 
 ---
 
 ## 🧾 Data Model
 
-Entity: `ParkingSpot`
-ID: `urn:ngsi-ld:ParkingSpot:001`
-Type: `ParkingSpot`
+The core entity is a `ParkingSpot`, represented in NGSI v2 format:
 
 ```json
 {
@@ -51,118 +66,80 @@ Type: `ParkingSpot`
 }
 ```
 
----
-
-## 🐳 Installation (via Docker Compose)
-
-```bash
-git clone https://github.com/AmineBz02/digital-twin-parking.git
-cd parking-twin
-docker-compose up -d
-```
-
-### 📄 `docker-compose.yml` includes:
-
-* `orion`: Context broker
-* `mongo`: DB for Orion
-* `draco`: Data persistence
-* `mysql`: Historical data storage
-* `bolt`: Visualization UI
-* `flask-app`: Notification listener
+This model can be extended to include location, timestamp, sensor info, etc.
 
 ---
 
-## 🚀 Running the App
+## 🛠️ Setup Instructions
 
-1. Start services:
+1. **Clone the Repository**
+
+   ```bash
+   git clone https://github.com/your-username/smart-parking-digital-twin.git
+   cd smart-parking-digital-twin
+   ```
+
+2. **Edit IP Placeholders**
+
+   Replace `<YOUR_VM_IP>` in the config or subscription files with your VM's actual IP address.
+
+3. **Start the System**
+
+   Using Docker Compose:
 
    ```bash
    docker-compose up -d
    ```
 
-2. Run your Flask app (if not containerized):
-
-   ```bash
-   cd parking-twin
-   source flask-venv/bin/activate
-   python listener.py
-   ```
-
-3. Access Orion: [http://localhost:1026/version](http://localhost:1026/version)
-
-4. Access BOLT Dashboard: [http://localhost:3001](http://localhost:3001)
-
 ---
 
-## 📡 Subscriptions
+## 🚀 Running the Application
 
-Orion is subscribed to your entity changes:
+* **Orion Context Broker**
+  Accessible at: `http://<YOUR_VM_IP>:1026`
 
-```bash
-curl -X POST http://localhost:1026/v2/subscriptions \
--H "Content-Type: application/json" \
--d '{
-  "description": "Parking Spot Status Change",
-  "subject": {
-    "entities": [{"idPattern": ".*", "type": "ParkingSpot"}],
-    "condition": { "attrs": ["status"] }
-  },
-  "notification": {
-    "http": { "url": "http://<your-ip>:5000/notify" },
-    "attrs": ["status"]
+* **Flask Listener (Notification Receiver)**
+  Accessible at: `http://<YOUR_VM_IP>:5000/notify`
+
+* **Subscription Setup**
+  Make sure to subscribe using your actual IP:
+
+  ```json
+  {
+    "notification": {
+      "http": {
+        "url": "http://<YOUR_VM_IP>:5000/notify"
+      }
+    }
   }
-}'
-```
+  ```
 
-> Make sure to replace `<your-ip>` with your actual IP address.
+* **Entity Update (example)**:
 
----
-
-## 📊 Visualisation with BOLT
-
-* Login: [http://localhost:3001](http://localhost:3001)
-* Default: `admin / admin`
-* Add Orion as a data source.
-* Create dashboards tracking the `status` attribute of the parking spot.
+  ```bash
+  curl -X PATCH "http://<YOUR_VM_IP>:1026/v2/entities/urn:ngsi-ld:ParkingSpot:001/attrs" \
+       -H "Content-Type: application/json" \
+       -d '{"status": {"type": "Text", "value": "occupied"}}'
+  ```
 
 ---
 
-## 📷 Screenshots
+## 📊 Visualizations
 
-> 📌 Add these once your dashboard is running:
-
-* Flask receiving notifications.
-* BOLT showing real-time status.
-* Subscription list in Orion.
+This project will soon include a web dashboard using [BOLT.New](https://bolt.new/) or a similar lightweight frontend tool to visualize the status of each parking spot.
 
 ---
 
-## 📚 Tech Stack
+## 📸 Screenshots
 
-* FIWARE Orion Context Broker
-* FIWARE Draco
-* MongoDB / MySQL
-* Flask (Python)
-* BOLT (Grafana-based)
-* Docker / Docker Compose
+*To be added after frontend integration*
 
 ---
 
-## 🧑‍💻 Author
+## 📃 License
 
-**Your Name**
-📧 [your.email@example.com](mailto:your.email@example.com)
-🔗 [LinkedIn](https://linkedin.com/in/yourprofile)
+This project is licensed under the MIT License.
 
 ---
 
-## 📄 License
 
-MIT License
-
-```
-
----
-
-Would you like me to also generate the `docker-compose.yml` file or create a GitHub repository structure for you?
-```
