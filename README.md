@@ -75,8 +75,8 @@ This model can be extended to include location, timestamp, sensor info, etc.
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/your-username/smart-parking-digital-twin.git
-   cd smart-parking-digital-twin
+   git clone https://github.com/AmineBz02/digital-twin-parking.git
+   cd parking-twin
    ```
 
 2. **Edit IP Placeholders**
