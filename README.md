@@ -56,8 +56,8 @@ Type: `ParkingSpot`
 ## 🐳 Installation (via Docker Compose)
 
 ```bash
-git clone https://github.com/yourusername/parking-digital-twin.git
-cd parking-digital-twin
+git clone https://github.com/AmineBz02/digital-twin-parking.git
+cd parking-twin
 docker-compose up -d
 ```
 
