@@ -74,42 +74,8 @@ The core entity is a Vehicle digital twin with these attributes (mock example):
 
 ---
 
-🛠️ **Setup Instructions**
 
-1. Clone the repository:
 
-```bash
-git clone https://github.com/votre-utilisateur/votre-repo.git
-cd votre-repo
-```
-
-2. Install dependencies:
-
-```bash
-npm install
-```
-
-3. Create a `.env` file in the root (optional):
-
-```
-REACT_APP_ORION_URL=http://<YOUR_VM_IP>:1026
-```
-
-4. Start the React app:
-
-```bash
-npm start
-```
-
----
-
-🚀 **Running the Application**
-
-* The frontend runs on [http://localhost:3000](http://localhost:3000) (or your configured port).
-* The app fetches simulated vehicle telemetry data and displays real-time updates.
-* Replace mock data or backend API endpoints with your actual IoT context broker to integrate real telemetry.
-
----
 
 📊 **Visualizations**
 
@@ -123,7 +89,7 @@ npm start
 
 📸 **Screenshots**
 Demo video link :https://www.loom.com/share/b78a8ac626ab4d2d8e62885d2482f66b?sid=f9077b50-c6b8-417d-85e7-868640a931ad
-
+website link :https://iot-ensit-project.netlify.app/
 
 ---
 
