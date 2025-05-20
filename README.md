@@ -13,8 +13,6 @@ This project implements a Digital Twin simulating remote monitoring of embedded 
 * Project Overview
 * Architecture
 * Technologies Used
-* Data Model
-* Setup Instructions
 * Running the Application
 * Visualizations
 * Screenshots
@@ -34,7 +32,7 @@ The solution consists of:
 
 * **Mock Data Generator** – Simulates sensor telemetry for demonstration purposes.
 * **React Frontend** – Displays telemetry data such as speed, temperature, fuel level, and GPS location.
-* **Backend (optional)** – Serves data or acts as a proxy to a real IoT context broker.
+* **Backend ** – Serves data or acts as a proxy to a real IoT context broker.
 * **Visualization** – Maps and gauges to represent live sensor states.
 
 Communication happens over HTTP REST APIs; real IoT integration can replace mock data in the future.
@@ -44,46 +42,16 @@ Communication happens over HTTP REST APIs; real IoT integration can replace mock
 💡 **Technologies Used**
 
 * React.js (functional components, hooks)
-* Axios for API calls
-* React-Leaflet for GPS map visualization
 * Material-UI / Chakra UI for responsive UI components
-* Node.js / Express (optional backend)
+* Node.js / Express 
 * Mock data for sensor simulation
 
----
-
-🧾 **Data Model**
-
-The core entity is a Vehicle digital twin with these attributes (mock example):
-
-```json
-{
-  "id": "Vehicle001",
-  "type": "Vehicle",
-  "speed": { "type": "Number", "value": 75 },
-  "engineTemperature": { "type": "Number", "value": 90 },
-  "fuelLevel": { "type": "Number", "value": 50 },
-  "location": {
-    "type": "geo:json",
-    "value": { "type": "Point", "coordinates": [-74.006, 40.7128] }
-  },
-  "faults": { "type": "Array", "value": [] },
-  "status": { "type": "Text", "value": "normal" }
-}
-```
-
----
 
 
 
 
-📊 **Visualizations**
-
-* Speedometer or numeric display for vehicle speed
-* Engine temperature gauge
-* Fuel level indicator
-* GPS location map via React-Leaflet
-* Fault alerts and vehicle status color-coded by severity
+📊 **Visualizations
+* Scencors 
 
 ---
 
